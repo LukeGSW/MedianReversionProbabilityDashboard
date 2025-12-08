@@ -349,7 +349,7 @@ def main():
         
         viz = Visualizer(ticker=ticker)
         fig_main = viz.plot_analysis(df_scored, df_turning_points, show_distributions=False)
-        st.plotly_chart(fig_main, use_container_width=True)
+        st.plotly_chart(fig_main, key="main_chart")
         
         # Interpretation Guide
         with st.expander("📖 How to Read This Chart"):
@@ -379,8 +379,7 @@ def main():
                 c: '{:.2f}' for c in performance_matrix.columns if 'Ret' in c
             }).format({
                 c: '{:.1f}' for c in performance_matrix.columns if 'Win_Rate' in c
-            }),
-            use_container_width=True
+            })
         )
         
         # Mean Reversion Validation
@@ -401,11 +400,11 @@ def main():
         
         with tab1:
             fig_wr = viz.plot_win_rate_chart(performance_matrix)
-            st.plotly_chart(fig_wr, use_container_width=True)
+            st.plotly_chart(fig_wr, key="win_rate_chart")
         
         with tab2:
             fig_hm = viz.plot_performance_heatmap(performance_matrix)
-            st.plotly_chart(fig_hm, use_container_width=True)
+            st.plotly_chart(fig_hm, key="heatmap_chart")
         
         with tab3:
             st.subheader("Dataset Summary")
