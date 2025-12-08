@@ -377,15 +377,12 @@ def main():
         # Statistical Backtest Results
         st.header("📊 Statistical Backtest Matrix")
         
-        # Performance Matrix Display
+        # Performance Matrix Display (senza gradient per evitare dipendenza matplotlib)
         st.dataframe(
-            performance_matrix.style.background_gradient(
-                cmap='RdYlGn',
-                subset=[c for c in performance_matrix.columns if 'Avg_Ret' in c]
-            ).format({
-                c: '{:.2f}%' for c in performance_matrix.columns if 'Ret' in c
+            performance_matrix.style.format({
+                c: '{:.2f}' for c in performance_matrix.columns if 'Ret' in c
             }).format({
-                c: '{:.1f}%' for c in performance_matrix.columns if 'Win_Rate' in c
+                c: '{:.1f}' for c in performance_matrix.columns if 'Win_Rate' in c
             }),
             use_container_width=True
         )
