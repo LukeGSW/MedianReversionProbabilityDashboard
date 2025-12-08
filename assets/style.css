@@ -1,0 +1,209 @@
+/* Kriterion Quant - Median Reversion Dashboard Custom Styles */
+
+/* Main container styling */
+.main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
+}
+
+/* Header styling */
+h1 {
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 15px;
+}
+
+h2 {
+    color: #34495e;
+    margin-top: 2rem;
+}
+
+h3 {
+    color: #7f8c8d;
+}
+
+/* Metric cards */
+div[data-testid="metric-container"] {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Insight boxes */
+.insight-box {
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    border-left: 6px solid;
+}
+
+.insight-bullish {
+    background-color: #d4efdf;
+    border-color: #27ae60;
+}
+
+.insight-bearish {
+    background-color: #fadbd8;
+    border-color: #c0392b;
+}
+
+.insight-neutral {
+    background-color: #ebf5fb;
+    border-color: #2980b9;
+}
+
+/* Didactic blocks */
+.didactic {
+    background-color: #f9f9f9;
+    border-left: 5px solid #2c3e50;
+    padding: 15px;
+    font-style: italic;
+    font-family: 'Georgia', serif;
+    margin: 20px 0;
+    color: #333;
+    border-radius: 0 8px 8px 0;
+}
+
+.didactic strong {
+    color: #2c3e50;
+}
+
+/* Table styling */
+.dataframe {
+    font-size: 0.9em;
+}
+
+.dataframe th {
+    background-color: #2c3e50;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.dataframe td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.dataframe tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Sidebar styling */
+.sidebar .sidebar-content {
+    background-color: #f8f9fa;
+}
+
+/* Button styling */
+.stButton > button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.stButton > button:hover {
+    background-color: #2980b9;
+}
+
+/* Success message */
+.stSuccess {
+    background-color: #d4efdf;
+    border-color: #27ae60;
+}
+
+/* Warning message */
+.stWarning {
+    background-color: #fef9e7;
+    border-color: #f39c12;
+}
+
+/* Error message */
+.stError {
+    background-color: #fadbd8;
+    border-color: #e74c3c;
+}
+
+/* Expander styling */
+.streamlit-expanderHeader {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Footer */
+.footer {
+    margin-top: 50px;
+    font-size: 0.85em;
+    color: #7f8c8d;
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+/* Band color classes */
+.band-extreme-oversold {
+    background-color: #27ae60;
+    color: white;
+}
+
+.band-oversold {
+    background-color: #58d68d;
+    color: white;
+}
+
+.band-low-neutral {
+    background-color: #abebc6;
+    color: #333;
+}
+
+.band-neutral {
+    background-color: #f7dc6f;
+    color: #333;
+}
+
+.band-high-neutral {
+    background-color: #f5b041;
+    color: #333;
+}
+
+.band-overbought {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.band-extreme-overbought {
+    background-color: #922b21;
+    color: white;
+}
+
+/* Score indicator */
+.score-high {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.score-low {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.score-neutral {
+    color: #7f8c8d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main .block-container {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+}
