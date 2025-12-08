@@ -115,6 +115,7 @@ def run_analysis(
     api_key: str, 
     start_date: datetime, 
     end_date: datetime,
+    exchange: str = 'US',
     median_window: int = 252,
     turning_point_order: int = 20
 ) -> bool:
@@ -136,7 +137,8 @@ def run_analysis(
         df_raw = client.get_historical_data(
             ticker=ticker,
             start_date=start_date.strftime('%Y-%m-%d'),
-            end_date=end_date.strftime('%Y-%m-%d')
+            end_date=end_date.strftime('%Y-%m-%d'),
+            exchange=exchange
         )
         
         if df_raw.empty:
@@ -191,33 +193,26 @@ def main():
     st.title("📊 Median Reversion Probability Dashboard")
     st.markdown("*Kriterion Quant Project - Quantitative Mean Reversion Analysis*")
     
+    # Get API key from secrets (hidden from UI)
+    api_key = get_api_key()
+    
     # Sidebar Configuration
     with st.sidebar:
         st.header("⚙️ Configuration")
-        
-        # API Key
-        api_key = st.text_input(
-            "EODHD API Key",
-            value=get_api_key(),
-            type="password",
-            help="Get your free API key at eodhd.com"
-        )
-        
-        st.divider()
         
         # Ticker Selection
         ticker = st.text_input(
             "Ticker Symbol",
             value="SPY",
-            help="Enter US stock/ETF symbol (e.g., SPY, AAPL, QQQ)"
+            help="Examples: SPY, AAPL, MSFT for stocks | BTC-USD, ETH-USD for crypto"
         ).upper()
         
         # Exchange Selection
         exchange = st.selectbox(
             "Exchange",
-            options=['US', 'LSE', 'PA', 'XETRA', 'TO', 'HK', 'CC', 'FOREX', 'INDX'],
+            options=['US', 'CC', 'LSE', 'PA', 'XETRA', 'TO', 'HK', 'FOREX', 'INDX'],
             index=0,
-            help="Select the exchange (US for American stocks)"
+            help="US = American stocks/ETFs | CC = Cryptocurrency | FOREX = Currency pairs"
         )
         
         st.divider()
@@ -266,7 +261,7 @@ def main():
         
         if run_button:
             if not api_key:
-                st.error("Please enter an API key")
+                st.error("API key not configured. Please set EODHD_API_KEY in secrets.")
             elif not ticker:
                 st.error("Please enter a ticker symbol")
             else:
@@ -275,6 +270,7 @@ def main():
                     api_key, 
                     start_date, 
                     end_date,
+                    exchange=exchange,
                     median_window=median_window,
                     turning_point_order=turning_point_order
                 )
@@ -377,7 +373,7 @@ def main():
         # Statistical Backtest Results
         st.header("📊 Statistical Backtest Matrix")
         
-        # Performance Matrix Display (senza gradient per evitare dipendenza matplotlib)
+        # Performance Matrix Display
         st.dataframe(
             performance_matrix.style.format({
                 c: '{:.2f}' for c in performance_matrix.columns if 'Ret' in c
@@ -469,15 +465,14 @@ def main():
         3. **Generates Reversal Score** - A real-time indicator (0-100) based on percentile rank
         4. **Backtests Historical Performance** - Validates mean reversion with forward returns analysis
         
-        ### 📊 Key Concepts
+        ### 📊 Supported Assets
         
-        | Band | Percentile | Interpretation |
-        |------|------------|----------------|
-        | Extreme Oversold | < 5% | Strong buy signal |
-        | Oversold | 5-20% | Buy opportunity |
-        | Neutral | 45-55% | Fair value |
-        | Overbought | 80-95% | Sell consideration |
-        | Extreme Overbought | > 95% | Strong sell signal |
+        | Exchange | Ticker Examples | Description |
+        |----------|-----------------|-------------|
+        | US | SPY, AAPL, MSFT, QQQ | US Stocks & ETFs |
+        | CC | BTC-USD, ETH-USD, SOL-USD | Cryptocurrencies |
+        | FOREX | EURUSD, GBPUSD | Currency pairs |
+        | INDX | GSPC, DJI, IXIC | Market indices |
         
         ### ⚠️ Disclaimer
         
