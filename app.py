@@ -110,7 +110,14 @@ def generate_insight_html(ticker: str, df_scored: pd.DataFrame, performance_matr
     return insight
 
 
-def run_analysis(ticker: str, api_key: str, start_date: datetime, end_date: datetime) -> bool:
+def run_analysis(
+    ticker: str, 
+    api_key: str, 
+    start_date: datetime, 
+    end_date: datetime,
+    median_window: int = 252,
+    turning_point_order: int = 20
+) -> bool:
     """
     Execute the complete analysis pipeline.
     
@@ -140,13 +147,13 @@ def run_analysis(ticker: str, api_key: str, start_date: datetime, end_date: date
         
         # Step 2: Feature Engineering
         status_text.text("⚙️ Calculating median and percentiles...")
-        engineer = FeatureEngineer(median_window=252)
+        engineer = FeatureEngineer(median_window=median_window)
         df_features = engineer.calculate_features(df_raw)
         progress_bar.progress(50)
         
         # Step 3: Signal Processing
         status_text.text("🔍 Detecting signals and turning points...")
-        processor = SignalProcessor(turning_point_order=20)
+        processor = SignalProcessor(turning_point_order=turning_point_order)
         df_scored = processor.calculate_real_time_score(df_features)
         df_turning_points = processor.detect_ex_post_turning_points(df_scored)
         progress_bar.progress(70)
@@ -263,7 +270,14 @@ def main():
             elif not ticker:
                 st.error("Please enter a ticker symbol")
             else:
-                run_analysis(ticker, api_key, start_date, end_date)
+                run_analysis(
+                    ticker, 
+                    api_key, 
+                    start_date, 
+                    end_date,
+                    median_window=median_window,
+                    turning_point_order=turning_point_order
+                )
     
     # Main Content Area
     if st.session_state.data_loaded:
