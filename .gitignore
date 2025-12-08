@@ -82,3 +82,6 @@ Thumbs.db
 reports/
 *.html
 !assets/*.html
+
+# Streamlit secrets (NEVER commit!)
+.streamlit/secrets.toml
