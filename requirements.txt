@@ -8,6 +8,7 @@ requests>=2.31.0
 
 # Visualization
 plotly>=5.18.0
+matplotlib>=3.7.0
 
 # Signal Processing
 scipy>=1.11.0
