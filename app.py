@@ -18,6 +18,7 @@ from src.feature_engineer import FeatureEngineer
 from src.signal_processor import SignalProcessor
 from src.stats_engine import StatsEngine
 from src.visualizer import Visualizer
+from src.data_exporter import DataExporter # <--- AGGIUNTA NUOVA RIGA
 
 # Page configuration
 st.set_page_config(
@@ -218,20 +219,58 @@ def main():
         st.divider()
         
         # Date Range
-        col1, col2 = st.columns(2)
+        # Export Section
+        st.header("💾 Export Report")
+        
+        # Modifica: Creiamo 3 colonne invece di 2
+        col1, col2, col3 = st.columns(3) 
+        
         with col1:
-            start_date = st.date_input(
-                "Start Date",
-                value=datetime(2010, 1, 1),
-                min_value=datetime(2000, 1, 1),
-                max_value=datetime.now()
+            # CSV Export (Performance Matrix)
+            csv = performance_matrix.to_csv()
+            st.download_button(
+                label="📄 Matrix (CSV)",
+                data=csv,
+                file_name=f"performance_matrix_{ticker}_{datetime.now().strftime('%Y%m%d')}.csv",
+                mime="text/csv",
+                use_container_width=True
             )
+        
         with col2:
-            end_date = st.date_input(
-                "End Date",
-                value=datetime.now(),
-                min_value=datetime(2000, 1, 1),
-                max_value=datetime.now()
+            # Full data CSV
+            full_csv = df_scored.to_csv()
+            st.download_button(
+                label="📊 Full Data (CSV)",
+                data=full_csv,
+                file_name=f"full_data_{ticker}_{datetime.now().strftime('%Y%m%d')}.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+
+        with col3:
+            # --- NUOVA IMPLEMENTAZIONE JSON ---
+            # Prepariamo i metadati dello studio corrente
+            run_metadata = {
+                "median_window": st.session_state.get('median_window', 252), # Assumendo che tu voglia salvare i parametri
+                "exchange": st.session_state.get('exchange', 'US'),
+                "price_type": st.session_state.get('price_type', 'N/A')
+            }
+            
+            # Generiamo il JSON usando la nuova classe
+            json_str = DataExporter.prepare_full_export(
+                ticker=ticker,
+                df_scored=df_scored,
+                df_turning_points=df_turning_points,
+                performance_matrix=performance_matrix,
+                metadata=run_metadata
+            )
+            
+            st.download_button(
+                label="📦 All Data (JSON)",
+                data=json_str,
+                file_name=f"kriterion_analysis_{ticker}_{datetime.now().strftime('%Y%m%d')}.json",
+                mime="application/json",
+                use_container_width=True
             )
         
         st.divider()
